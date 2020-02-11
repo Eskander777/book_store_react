@@ -13,7 +13,7 @@ class Shop extends Component {
         bookName: ' ',
         showImage: false,
         order: false,
-        defaultAmount: 1
+        defaultAmount: 1.
     }
 
     imageClickedHandler = event => {

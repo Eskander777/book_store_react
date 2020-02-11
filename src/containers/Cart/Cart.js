@@ -17,7 +17,7 @@ class Cart extends Component {
         const buttonClicked = event.target;
         const itemToDeleteTitile = buttonClicked.parentElement.parentElement.children[1].children[0].innerText;
         const updatedOrderArray = orderArray.filter(book => book.title !== itemToDeleteTitile)
-        // this.setState({order: updatedOrderArray});
+        this.setState({order: updatedOrderArray});
 
         console.log('[deleteItemHandler]')
         console.log(itemToDeleteTitile)
@@ -27,25 +27,31 @@ class Cart extends Component {
     }
 
     changeCartAmountHandler = (event) => {
-        const input = event.target;
+        let input = event.target;
         console.log(input.value);
-        if (isNaN(input.value) || input.value <= 0 || input.value >= 1000){
-            input.value = 1;
+        if (isNaN(input) || input <= 0 || input >= 1000){
+            input = 1;
         }
     }
 
-    addOrderToCartHandler = (order) => {
-        this.setState({order: order})
+    componentDidUpdate = (prevProps) => {
+        console.log('[componentDidUpdate]')
+        if (this.props.order !== prevProps.order) {
+            console.log('setState')
+            this.setState({order: this.props.order})
+        } else {
+            console.log('Not setting state')
+        }
     }
     
     render() {
 
-        console.log(this.props.order);
+        console.log(this.state.order);
 
         let cartItems;
 
-        if (this.props.order) {
-            const cartOrder = this.props.order;
+        if (this.state.order) {
+            const cartOrder = this.state.order;
             
             cartItems = cartOrder.map(item => (<CartItem 
                     imageSrc={item.imageSrc}
