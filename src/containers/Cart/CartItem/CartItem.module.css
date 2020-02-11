@@ -1,0 +1,44 @@
+.Cart__price {
+    width: 10%;
+    font-size: 1.2em;
+    color: #333
+}
+
+.Cart__quantity {
+    width: 20%
+}
+
+.Cart__image_td {
+    width: 10%
+}
+
+.Cart__item_image {
+    height: 100px;
+    width: auto;
+    margin-bottom: 11px;
+    border-radius: 5px
+}
+
+.Cart__item_code {
+    color: grey
+}
+
+.Cart__quantity_input {
+    height: 28px;
+    width: 50px;
+    border-radius: 5px;
+    border: 1px solid #56CCF2;
+    background-color: #eee;
+    color: #333;
+    padding: 0;
+    font-size: 1.2em;
+    margin-right: 25px
+}
+
+.Cart__item_total_price {
+    width: 10%;
+    color: #333;
+    font-size: 1.1em;
+    margin-top: 10px;
+    margin-right: 20px
+}
