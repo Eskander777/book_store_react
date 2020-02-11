@@ -5,37 +5,19 @@ import CartItem from './CartItem/CartItem';
 
 class Cart extends Component {
     state = {
-        order: [],
+        order: false,
         order_total: {
             totalPrice: 0,
             totalAmount: 0
         }
     }
 
-    addToCartHandler = order => {
-        const orderArray = this.state.order;
-        const orderArrayTitles = orderArray.map(order => {
-            return (order.title)
-        });
-
-        if(order.title !== "" && !orderArrayTitles.includes(order.title)) {
-            orderArray.push(order);
-            this.setState({order: orderArray})
-        } else {
-            // console.log('Already added')
-        }
-
-        // console.log(this.state.order);
-    }
-
     deleteItemHandler = (event) => {
         const orderArray = this.state.order;
         const buttonClicked = event.target;
         const itemToDeleteTitile = buttonClicked.parentElement.parentElement.children[1].children[0].innerText;
-        const updatedOrderArray = orderArray.filter((book) => {
-            return book.title !== itemToDeleteTitile;
-        })
-        this.setState({order: updatedOrderArray});
+        const updatedOrderArray = orderArray.filter(book => book.title !== itemToDeleteTitile)
+        // this.setState({order: updatedOrderArray});
 
         console.log('[deleteItemHandler]')
         console.log(itemToDeleteTitile)
@@ -51,17 +33,19 @@ class Cart extends Component {
             input.value = 1;
         }
     }
+
+    addOrderToCartHandler = (order) => {
+        this.setState({order: order})
+    }
     
     render() {
 
-        if (this.props.order.title !== "") {
-            this.addToCartHandler(this.props.order);
-        }
+        console.log(this.props.order);
 
         let cartItems;
 
-        if (this.state.order !== []) {
-            const cartOrder = this.state.order;
+        if (this.props.order) {
+            const cartOrder = this.props.order;
             
             cartItems = cartOrder.map(item => (<CartItem 
                     imageSrc={item.imageSrc}

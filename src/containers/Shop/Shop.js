@@ -12,7 +12,7 @@ class Shop extends Component {
         imageSrc: ' ',
         bookName: ' ',
         showImage: false,
-        order: {title: ""},
+        order: false,
         defaultAmount: 1
     }
 
@@ -26,7 +26,7 @@ class Shop extends Component {
         this.setState({showImage: false});
     }
 
-    addToCartHandler = event => {
+    addToCartHandler = (event) => {
         const button = event.target;
         const shopItem = button.parentElement.parentElement.parentElement;
         const title = shopItem.getElementsByClassName('Book_Book__description_title')[0].innerText;
@@ -49,7 +49,25 @@ class Shop extends Component {
             total: total,
         }
 
-        this.setState({order: pickedOrder})
+        if (this.state.order) {
+            const orderArray = this.state.order;
+            const orderArrayTitles = orderArray.map(item => {
+                return (item.title)
+            });
+
+            if(!orderArrayTitles.includes(title)) {
+                orderArray.push(pickedOrder);
+                this.setState({order: orderArray})
+                alert("Item added to Cart")
+            } else {
+                console.log('Already added')
+            }
+        } else {
+            const orderArray = [];
+            orderArray.push(pickedOrder);
+            this.setState({order: orderArray});
+            alert("Item added to Cart")
+        }
     }
 
     changeAmountHandler = (event) => {
