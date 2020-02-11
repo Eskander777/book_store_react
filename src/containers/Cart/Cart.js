@@ -22,10 +22,10 @@ class Cart extends Component {
             orderArray.push(order);
             this.setState({order: orderArray})
         } else {
-            console.log('Already added')
+            // console.log('Already added')
         }
 
-        console.log(this.state.order);
+        // console.log(this.state.order);
     }
 
     deleteItemHandler = (event) => {
@@ -36,10 +36,12 @@ class Cart extends Component {
             return book.title !== itemToDeleteTitile;
         })
         this.setState({order: updatedOrderArray});
-        buttonClicked.parentElement.parentElement.remove();
 
+        console.log('[deleteItemHandler]')
+        console.log(itemToDeleteTitile)
+        console.log(orderArray)
         console.log(updatedOrderArray)
-        console.log(this.state.order)
+        // console.log(this.state.order)
     }
 
     changeCartAmountHandler = (event) => {

@@ -25,7 +25,7 @@ const cartItem = props => {
                 <button 
                     className="btn btn-danger" 
                     type="button"
-                    onClick={props.deleteItem}
+                    onClick={(event) => props.deleteItem(event)}
                     >Убрать</button>
             </td>
             <td className={classes.Cart__item_total_price}>{props.itemTotalPrice} ₽</td>

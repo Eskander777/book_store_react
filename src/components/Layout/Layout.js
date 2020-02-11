@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Aux from '../../hoc/Auxiliary';
-import Books from '../../containers/Books/Books';
+import Shop from '../../containers/Shop/Shop';
 
 
 class Layout extends Component {
@@ -29,7 +29,7 @@ class Layout extends Component {
                     </button>
                 </nav>
                 <main>
-                    <Books 
+                    <Shop   
                         showCart={this.state.showCart} 
                         closeCartClick={this.closeCart} />
                 </main>

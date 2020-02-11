@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
 import Aux from '../../hoc/Auxiliary';
-import classes from './Books.module.css';
+import classes from './Shop.module.css';
 import Books from '../../assets/LoadBooksFromDb';
 import Book from './Book/Book';
 import ModuleForImage from '../../components/UI/ModuleForImage';
 import Cart from '../Cart/Cart';
 
-class BooksContainer extends Component {
+class Shop extends Component {
     state = {
         imageSrc: ' ',
         bookName: ' ',
@@ -30,14 +30,14 @@ class BooksContainer extends Component {
         const button = event.target;
         const shopItem = button.parentElement.parentElement.parentElement;
         const title = shopItem.getElementsByClassName('Book_Book__description_title')[0].innerText;
-        const priceRaw = shopItem.getElementsByClassName('Book_Book__price_val__2ChUs')[0].innerText;
-        const amountStr = shopItem.getElementsByClassName('Book_Book__amount__18738 col-4')[0].value;
+        const priceRaw = shopItem.getElementsByClassName('Book_Book__price_val__1UGoe')[0].innerText;
+        const amountStr = shopItem.getElementsByClassName('Book_Book__amount__2Y_yT col-4')[0].value;
         let amount = parseInt(amountStr);
         if (isNaN(amount) || amount <= 0 || amount >= 1000){
             amount = 1;
         };
-        const imageSrc = shopItem.getElementsByClassName('Book_Book__image__3PJAP rounded-circle')[0].src;
-        const code = shopItem.getElementsByClassName('Book_Book__code__3wfYc')[0].innerText;
+        const imageSrc = shopItem.getElementsByClassName('Book_Book__image__2djdo rounded-circle')[0].src;
+        const code = shopItem.getElementsByClassName('Book_Book__code__U8h_H')[0].innerText;
         const price = parseFloat(priceRaw);
         const total = price * amount;
         const pickedOrder = {
@@ -102,4 +102,4 @@ class BooksContainer extends Component {
     }
 }
 
-export default BooksContainer;
+export default Shop;
