@@ -18,12 +18,6 @@ class Cart extends Component {
         const itemToDeleteTitile = buttonClicked.parentElement.parentElement.children[1].children[0].innerText;
         const updatedOrderArray = orderArray.filter(book => book.title !== itemToDeleteTitile)
         this.setState({order: updatedOrderArray});
-
-        console.log('[deleteItemHandler]')
-        console.log(itemToDeleteTitile)
-        console.log(orderArray)
-        console.log(updatedOrderArray)
-        // console.log(this.state.order)
     }
 
     changeCartAmountHandler = (event) => {
@@ -35,12 +29,27 @@ class Cart extends Component {
     }
 
     componentDidUpdate = (prevProps) => {
-        console.log('[componentDidUpdate]')
-        if (this.props.order !== prevProps.order) {
-            console.log('setState')
-            this.setState({order: this.props.order})
-        } else {
-            console.log('Not setting state')
+        console.log('[componentDidUpdate]');
+        const shopItem = this.props.item;
+        if (shopItem !== prevProps.item) {
+            if (this.state.order) {
+                const orderArray = this.state.order;
+                const orderArrayTitles = orderArray.map(item => {
+                return (item.title)})
+                if (!orderArrayTitles.includes(shopItem.title)) {
+                    orderArray.push(shopItem);
+                    console.log('setState');
+                    this.setState({order: orderArray});
+                    alert("Item added to Cart")
+                } else {
+                    console.log('Already added');
+                }
+            } else {
+                const orderArray = [];
+                orderArray.push(shopItem);
+                this.setState({order: orderArray});
+                alert("Item added to Cart");
+            }
         }
     }
     

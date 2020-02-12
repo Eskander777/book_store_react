@@ -5,7 +5,8 @@ const books = [
   "price": "212",
   "currency": " ₽",
   "code": "1",
-  "amount": "30"
+  "amountInStock": "30",
+  "defaultAmountToBuy": 1
   },
   {"title": "Над пропастью во ржи",
   "image": "https://img4.labirint.ru/rc/353e7964053487ba97fe00ca0fc4644c/220x340/books50/493796/cover.jpg?1437492343",
@@ -13,7 +14,8 @@ const books = [
   "price": "187",
   "currency": " ₽",
   "code": "2",
-  "amount": "30"
+  "amountInStock": "30",
+  "defaultAmountToBuy": 1
   },
   {"title": "Идиот",
   "image": "https://cdn1.ozone.ru/s3/multimedia-5/c650/6006264545.jpg",
@@ -21,7 +23,8 @@ const books = [
   "price": "144",
   "currency": " ₽",
   "code": "3",
-  "amount": "30"
+  "amountInStock": "30",
+  "defaultAmountToBuy": 1
   },
   {"title": "Преступление и наказание",
   "image": "https://www.moscowbooks.ru/image/book/495/w600/i495426.jpg",
@@ -29,7 +32,8 @@ const books = [
   "price": "160",
   "currency": " ₽",
   "code": "4",
-  "amount": "30"
+  "amountInStock": "30",
+  "defaultAmountToBuy": 1
   },
   {"title":"На дне",
   "image": "https://cdn1.ozone.ru/multimedia/c650/1003559322.jpg",
@@ -37,7 +41,8 @@ const books = [
   "price": "96",
   "currency": " ₽",
   "code": "5",
-  "amount": "30"
+  "amountInStock": "30",
+  "defaultAmountToBuy": 1
   }
   ];
 
