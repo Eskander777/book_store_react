@@ -20,30 +20,56 @@ class Cart extends Component {
         this.setState({order: updatedOrderArray});
     }
 
-    changeCartAmountHandler = (event) => {
-        let input = event.target;
-        console.log(input.value);
+    changeCartAmountHandler = (event, title) => {
+        const itemToChangeIndex = this.state.order.findIndex(i => {
+            return i.title === title;
+        })
+
+        const item = {
+            ...this.state.order[itemToChangeIndex]
+        } 
+
+        let input = event.target.value;
+
         if (isNaN(input) || input <= 0 || input >= 1000){
             input = 1;
         }
+
+        item.amount = input;
+        const itemTotalPrice = input * item.price
+        item.total = itemTotalPrice;
+
+        const items = [...this.state.order];
+        items[itemToChangeIndex] = item;
+
+        this.setState({order: items})
     }
 
     componentDidUpdate = (prevProps) => {
         console.log('[componentDidUpdate]');
         const shopItem = this.props.item;
-        if (shopItem !== prevProps.item) {
+        if (shopItem) {
             if (this.state.order) {
-                const orderArray = this.state.order;
-                const orderArrayTitles = orderArray.map(item => {
-                return (item.title)})
-                if (!orderArrayTitles.includes(shopItem.title)) {
-                    orderArray.push(shopItem);
-                    console.log('setState');
-                    this.setState({order: orderArray});
-                    alert("Item added to Cart")
-                } else {
-                    console.log('Already added');
-                }
+                if (shopItem !== prevProps.item) {
+                    const orderArray = [...this.state.order];
+                    const orderArrayTitles = orderArray.map(item => {
+                    return (item.title)
+                    })
+                    if (!orderArrayTitles.includes(shopItem.title)) {
+                        orderArray.push(shopItem);
+                        console.log('setState');
+                        this.setState({order: orderArray});
+                        console.log(this.state.order)
+                        alert("Item added to Cart")
+                    } else {
+                        console.log('Already Added!')
+                        const itemToAddAmountIndex = orderArray.findIndex(i => {
+                            return i.title === shopItem.title;
+                        })
+                        const itemToAddAmount = orderArray[itemToAddAmountIndex];
+                        console.log(itemToAddAmount);
+                    }
+                } 
             } else {
                 const orderArray = [];
                 orderArray.push(shopItem);
@@ -55,7 +81,7 @@ class Cart extends Component {
     
     render() {
 
-        console.log(this.state.order);
+        // console.log(this.state.order);
 
         let cartItems;
 
@@ -68,7 +94,7 @@ class Cart extends Component {
                     code={item.code}
                     price={item.price}
                     amount={item.amount}
-                    changeCartAmount={(event) => this.changeCartAmountHandler(event)}
+                    changeCartAmount={(event) => this.changeCartAmountHandler(event, item.title)}
                     deleteItem={(event) => this.deleteItemHandler(event)}
                     itemTotalPrice={item.total}
                     key={item.code}

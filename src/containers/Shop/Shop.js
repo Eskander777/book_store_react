@@ -31,7 +31,7 @@ class Shop extends Component {
         const shopItem = button.parentElement.parentElement.parentElement;
         const title = shopItem.getElementsByClassName('Book_Book__description_title')[0].innerText;
         const priceRaw = shopItem.getElementsByClassName('Book_Book__price_val__1UGoe')[0].innerText;
-        const amount = shopItem.getElementsByClassName('Book_Book__amount__2Y_yT col-4')[0].value;
+        const amount = parseInt(shopItem.getElementsByClassName('Book_Book__amount__2Y_yT col-4')[0].value);
         const imageSrc = shopItem.getElementsByClassName('Book_Book__image__2djdo rounded-circle')[0].src;
         const code = shopItem.getElementsByClassName('Book_Book__code__U8h_H')[0].innerText;
         const price = parseFloat(priceRaw);
@@ -44,6 +44,7 @@ class Shop extends Component {
             code: code,
             total: total,
         }
+
         this.setState({item: pickedItem});
     }
 
@@ -56,7 +57,8 @@ class Shop extends Component {
             ...this.state.goods[bookAmountToChangeIndex]
         };
 
-        let amount = parseInt(event.target.value);
+        let amount = event.target.value;
+
         if (isNaN(amount) || amount <= 0 || amount >= 1000){
             amount = 1;
         };
@@ -71,8 +73,7 @@ class Shop extends Component {
         let itemToCart = this.state.item;
 
         if (book.title === itemToCart.title) {
-            itemToCart.amount = book.defaultAmountToBuy
-            console.log(itemToCart.amount)
+            itemToCart.amount = book.defaultAmountToBuy;
             this.setState({item: itemToCart})
         };
     }
