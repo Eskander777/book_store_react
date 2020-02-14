@@ -57,7 +57,7 @@ class Shop extends Component {
             ...this.state.goods[bookAmountToChangeIndex]
         };
 
-        let amount = event.target.value;
+        let amount = parseInt(event.target.value);
 
         if (isNaN(amount) || amount <= 0 || amount >= 1000){
             amount = 1;
@@ -69,13 +69,6 @@ class Shop extends Component {
         goods[bookAmountToChangeIndex] = book;
 
         this.setState({goods: goods});
-
-        let itemToCart = this.state.item;
-
-        if (book.title === itemToCart.title) {
-            itemToCart.amount = book.defaultAmountToBuy;
-            this.setState({item: itemToCart})
-        };
     }
 
     render() {
