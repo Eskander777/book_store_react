@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 
 import Aux from '../../hoc/Auxiliary';
-import Shop from '../../containers/Shop/Shop';
+import Shop from '../Shop/Shop';
+import ModuleForCustomerForm from '../../components/ModuleForCustomerForm/ModuleForCustomerForm';
 
 
 class Layout extends Component {
     state = {
-        showCart: false
+        showCart: false,
+        showCustomerForm: false
     }
 
     showCart = () => {
@@ -17,7 +19,13 @@ class Layout extends Component {
         this.setState({showCart: false});
     }
 
+    showCustomerForm = () => {
+        this.setState({showCustomerForm: true});
+    }
+
     render() {
+
+        console.log(this.state.showCustomerForm)
         
         return (
             <Aux>
@@ -31,8 +39,11 @@ class Layout extends Component {
                 <main>
                     <Shop   
                         showCart={this.state.showCart} 
-                        closeCartClick={this.closeCart} />
+                        closeCartClick={this.closeCart}
+                        showCustomerForm={this.showCustomerForm} />
                 </main>
+
+                <ModuleForCustomerForm showModule={this.state.showCustomerForm} />
             </Aux>
         )
     }

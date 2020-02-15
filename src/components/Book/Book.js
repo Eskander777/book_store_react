@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Aux from '../../../hoc/Auxiliary'
-import classes from './Book.module.css'
+import Aux from '../../hoc/Auxiliary';
+import classes from './Book.module.css';
 
 
 const book = (props) => {

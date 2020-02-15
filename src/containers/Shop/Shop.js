@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import Aux from '../../hoc/Auxiliary';
 import classes from './Shop.module.css';
 import BooksArray from '../../assets/LoadBooksFromDb';
-import Book from './Book/Book';
-import ModuleForImage from '../../components/UI/ModuleForImage';
+import Book from '../../components/Book/Book';
+import ModuleForImage from '../../components/ModuleForImage/ModuleForImage';
 import Cart from '../Cart/Cart';
 
 class Shop extends Component {
@@ -30,10 +30,10 @@ class Shop extends Component {
         const button = event.target;
         const shopItem = button.parentElement.parentElement.parentElement;
         const title = shopItem.getElementsByClassName('Book_Book__description_title')[0].innerText;
-        const priceRaw = shopItem.getElementsByClassName('Book_Book__price_val__1UGoe')[0].innerText;
-        const amount = parseInt(shopItem.getElementsByClassName('Book_Book__amount__2Y_yT col-4')[0].value);
-        const imageSrc = shopItem.getElementsByClassName('Book_Book__image__2djdo rounded-circle')[0].src;
-        const code = shopItem.getElementsByClassName('Book_Book__code__U8h_H')[0].innerText;
+        const priceRaw = shopItem.getElementsByClassName('Book_Book__price_val__otg0p')[0].innerText;
+        const amount = parseInt(shopItem.getElementsByClassName('Book_Book__amount__ieZHe col-4')[0].value);
+        const imageSrc = shopItem.getElementsByClassName('Book_Book__image__PUXI3 rounded-circle')[0].src;
+        const code = shopItem.getElementsByClassName('Book_Book__code__a8tp2')[0].innerText;
         const price = parseFloat(priceRaw);
         const total = price * amount;
         const pickedItem = {
@@ -100,6 +100,7 @@ class Shop extends Component {
                 <Cart 
                     showCart={this.props.showCart}
                     closeCartClick={this.props.closeCartClick}
+                    showCustomerForm={this.props.showCustomerForm}
                     item={this.state.item} />
 
                 <ModuleForImage 
@@ -107,6 +108,7 @@ class Shop extends Component {
                     bookName={this.state.bookName} 
                     showState={this.state.showImage}
                     closeClick={this.closeImageHandler} />
+
             </Aux>
         );    
     }

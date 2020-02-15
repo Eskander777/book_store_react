@@ -12,7 +12,7 @@ const moduleForImage = props => {
         modalStyle.display = "block";
     }
 
-    return(
+    return (
         <div className={classes.Modal_for_image} style={modalStyle} >
         <span className={classes.closeImageModal} onClick={props.closeClick}>×</span>
         <img 

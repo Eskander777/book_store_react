@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import classes from './Cart.module.css';
-import CartItem from './CartItem/CartItem';
+import CartItem from '../../components/CartItem/CartItem';
 
 class Cart extends Component {
     state = {
@@ -171,6 +171,12 @@ class Cart extends Component {
                                     <div className={classes.Cart__total_title}>Общая стоимость</div>
                                     <span className={classes.Cart__total_price}
                                         >{this.state.orderTotal.totalPrice} ₽</span>
+                                </div>
+                                <div className="col text-center">
+                                    <button 
+                                        className="btn btn-success" 
+                                        onClick={this.props.showCustomerForm}
+                                        >Сформировать заказ</button>
                                 </div>
                             </div>
                     </div>
