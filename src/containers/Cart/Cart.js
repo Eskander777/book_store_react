@@ -5,16 +5,18 @@ import CartItem from '../../components/CartItem/CartItem';
 
 class Cart extends Component {
     state = {
-        order: false,
-        orderTotal: {
-            totalPrice: 0,
-            totalAmount: 0
+        completeOrder: {
+            order: false,
+            orderTotal: {
+                totalPrice: 0,
+                totalAmount: 0
+            }
         }
     }
 
     deleteItemHandler = (event) => {
-        const orderArray = [...this.state.order];
-        const orderTotal = {...this.state.orderTotal};
+        const orderArray = [...this.state.completeOrder.order];
+        const orderTotal = {...this.state.completeOrder.orderTotal};
 
         const buttonRemoveClicked = event.target;
         const itemToDelete =  buttonRemoveClicked.parentElement.parentElement;
@@ -28,19 +30,19 @@ class Cart extends Component {
         const itemToDeleteTotalPrice = parseInt(itemToDelete.children[4].innerText);
         const updatedOrderTotalPrice = orderTotal.totalPrice - itemToDeleteTotalPrice;
         
-        this.setState({order: updatedOrderArray, orderTotal:{totalPrice: updatedOrderTotalPrice, 
-                                                 totalAmount: updatedOrderTotalAmount}
+        this.setState({completeOrder: {order: updatedOrderArray, orderTotal:{totalPrice: updatedOrderTotalPrice, 
+                                                 totalAmount: updatedOrderTotalAmount}}
         });
     }
 
     changeCartAmountHandler = (event, title) => {
-        const itemToChangeIndex = this.state.order.findIndex(i => {
+        const itemToChangeIndex = this.state.completeOrder.order.findIndex(i => {
             return i.title === title;
         })
-        const orderTotal = {...this.state.orderTotal};
+        const orderTotal = {...this.state.completeOrder.orderTotal};
 
         const item = {
-            ...this.state.order[itemToChangeIndex]
+            ...this.state.completeOrder.order[itemToChangeIndex]
         } 
 
         let updatedOrderTotalAmount = orderTotal.totalAmount - item.amount;
@@ -55,38 +57,38 @@ class Cart extends Component {
         const itemTotalPrice = item.amount * item.price
         item.total = itemTotalPrice;
 
-        const items = [...this.state.order];
+        const items = [...this.state.completeOrder.order];
         items[itemToChangeIndex] = item;
 
         updatedOrderTotalAmount += item.amount;
         updatedOrderTotalPrice += item.total;
 
-        this.setState({order: items, orderTotal:{totalPrice: updatedOrderTotalPrice, 
-                       totalAmount: updatedOrderTotalAmount}
+        this.setState({completeOrder: {order: items, orderTotal:{totalPrice: updatedOrderTotalPrice, 
+            totalAmount: updatedOrderTotalAmount}}
         });
     }
 
     componentDidUpdate = (prevProps) => {
         console.log('[componentDidUpdate]');
-        // console.log(this.state.order)
+        console.log(this.state)
         const shopItem = this.props.item;
         if (shopItem) {
-            if (this.state.order) {
+            if (this.state.completeOrder.order) {
                 if (shopItem !== prevProps.item) {
-                    const orderArray = [...this.state.order];
+                    const orderArray = [...this.state.completeOrder.order];
                     const orderArrayTitles = orderArray.map(item => {
                         return (item.title);
                     })
-                    const orderTotal = {...this.state.orderTotal};
+                    const orderTotal = {...this.state.completeOrder.orderTotal};
                     if (!orderArrayTitles.includes(shopItem.title)) {
                         orderArray.push(shopItem);
                         const updatedOrderTotalAmount = orderTotal.totalAmount + shopItem.amount;
                         const updatedOrderTotalPrice = orderTotal.totalPrice + shopItem.total;
                         console.log('setState');
-                        this.setState({order: orderArray, orderTotal: {totalPrice: updatedOrderTotalPrice, 
-                                                                       totalAmount: updatedOrderTotalAmount}
+                        this.setState({completeOrder: {order: orderArray, orderTotal:{totalPrice: updatedOrderTotalPrice, 
+                                                    totalAmount: updatedOrderTotalAmount}}
                         });
-                        alert("Item added to Cart")
+                        alert("Товар успешно добавлен!");
                     } else {
                         const itemToAddAmountIndex = orderArray.findIndex(i => {
                             return i.title === shopItem.title;
@@ -98,20 +100,19 @@ class Cart extends Component {
                         itemToAddAmount.total = itemToAddTotalPrice;
                         orderArray[itemToAddAmountIndex] = itemToAddAmount;
                         const updatedOrderTotalAmount = orderTotal.totalAmount + shopItem.amount;
-                        const updatedOrderTotalPrice = orderTotal.totalPrice + itemToAddAmount.price;;
-                        this.setState({order: orderArray, orderTotal: {totalPrice: updatedOrderTotalPrice, 
-                                       totalAmount: updatedOrderTotalAmount}
-});
+                        const updatedOrderTotalPrice = orderTotal.totalPrice + shopItem.total;;
+                        this.setState({completeOrder: {order: orderArray, orderTotal:{totalPrice: updatedOrderTotalPrice, 
+                                                    totalAmount: updatedOrderTotalAmount}}
+                        });
                     }
                 } 
             } else {
                 const orderArray = [];
                 orderArray.push(shopItem);
-                this.setState({order: orderArray, 
-                               orderTotal: {totalPrice: shopItem.total, 
-                                             totalAmount: shopItem.amount}
+                this.setState({completeOrder: {order: orderArray, orderTotal:{totalPrice: shopItem.total, 
+                                            totalAmount: shopItem.amount}}
                 });
-                alert("Item added to Cart");
+                alert("Товар успешно добавлен!");
             }
         }
     }
@@ -119,8 +120,8 @@ class Cart extends Component {
     render() {
         let cartItems;
 
-        if (this.state.order) {
-            const cartOrder = this.state.order;
+        if (this.state.completeOrder.order) {
+            const cartOrder = this.state.completeOrder.order;
             
             cartItems = cartOrder.map(item => (<CartItem 
                     imageSrc={item.imageSrc}
@@ -129,7 +130,7 @@ class Cart extends Component {
                     price={item.price}
                     amount={item.amount}
                     changeCartAmount={(event) => this.changeCartAmountHandler(event, item.title)}
-                    deleteItem={(event) => this.deleteItemHandler(event)}
+                    deleteItem={this.deleteItemHandler}
                     itemTotalPrice={item.total}
                     key={item.code}
                     />
@@ -167,10 +168,10 @@ class Cart extends Component {
                                 <div className={classes.Cart__total}>
                                     <div className={classes.Cart__total_title}>Общее кол-во</div>
                                     <span className={classes.Cart__total_amount}
-                                        >{this.state.orderTotal.totalAmount}</span>
+                                        >{this.state.completeOrder.orderTotal.totalAmount}</span>
                                     <div className={classes.Cart__total_title}>Общая стоимость</div>
                                     <span className={classes.Cart__total_price}
-                                        >{this.state.orderTotal.totalPrice} ₽</span>
+                                        >{this.state.completeOrder.orderTotal.totalPrice} ₽</span>
                                 </div>
                                 <div className="col text-center">
                                     <button 

@@ -14,43 +14,69 @@ class CustomerForm extends Component {
         }
     }
 
+    handleInputChange = (event) => {
+        const target = event.target;
+        const customerObject = {...this.state.customer};
+
+        const paramToChange = target.name
+        const paramValue = target.value
+
+        customerObject[paramToChange] = paramValue;
+        
+        this.setState({customer: customerObject})
+    }
+
+    submitHandler = (event) => {
+        console.log(this.state.customer);
+        event.preventDefault();
+    }
+
     render() {
+
         return (
-            <form action='/customer' method="POST">
+            <form action='/customer' method="POST" onSubmit={this.submitHandler}>
                 <div className="form-row">
                     <div className="form-group col-md-6">
                         <label htmlFor="customerFirstName">Имя</label>
                         <input 
-                            type="text" 
                             className="form-control" 
-                            id="customerFirstName"
+                            type="text" 
+                            name="customerFirstName"
+                            onChange={this.handleInputChange}
+                            value={this.state.customer.customerFirstName}
                             placeholder="Имя"
                             required></input>
                     </div>
                     <div className="form-group col-md-6">
                         <label htmlFor="customerLastName">Фамилия</label>
                         <input 
-                            type="text" 
                             className="form-control" 
-                            id="customerLastName"
+                            type="text" 
+                            name="customerLastName"
+                            onChange={this.handleInputChange}
+                            value={this.state.customer.customerLastName}
                             placeholder="Фамилия"
                             required></input>
                     </div>
                     <div className="form-group col-md-6">
                         <label htmlFor="inputEmail4">Email</label>
                         <input 
-                            type="email" 
                             className="form-control" 
-                            id="inputEmail4"
+                            type="email" 
+                            name="inputEmail4"
+                            onChange={this.handleInputChange}
+                            value={this.state.customer.inputEmail4}
                             placeholder="Email"
                             required></input>
                     </div>
                     <div className="form-group col-md-6">
                         <label htmlFor="inputPassword4">Пароль</label>
                         <input 
-                            type="password" 
                             className="form-control" 
-                            id="inputPassword4"
+                            type="password" 
+                            name="inputPassword4"
+                            onChange={this.handleInputChange}
+                            value={this.state.customer.inputPassword4}
                             autoComplete="off"
                             placeholder="Пароль"
                             required></input>
@@ -59,9 +85,11 @@ class CustomerForm extends Component {
                 <div className="form-group">
                     <label htmlFor="inputAddress">Адрес</label>
                         <input 
-                            type="text" 
                             className="form-control" 
-                            id="inputAddress"
+                            type="text" 
+                            name="inputAddress"
+                            onChange={this.handleInputChange}
+                            value={this.state.customer.inputAddress}
                             placeholder="Адрес"
                             required></input>
                 </div>
@@ -69,29 +97,35 @@ class CustomerForm extends Component {
                     <div className="form-group col-md-6">
                         <label htmlFor="inputCity">Город</label>
                         <input 
-                            type="text" 
                             className="form-control" 
-                            id="inputCity"
+                            type="text" 
+                            name="inputCity"
+                            onChange={this.handleInputChange}
+                            value={this.state.customer.inputCity}
                             required></input>
                     </div>
                     <div className="form-group col-md-4">
                         <label htmlFor="inputState">Страна</label>
                         <select 
-                            id="inputState"
                             className="form-control" 
+                            name="inputState"
+                            onChange={this.handleInputChange}
+                            value={this.state.customer.inputState}
                             required>
                                 <option defaultValue>Выберите...</option>
-                                <option>Российская Федерация</option>
-                                <option>Украина</option>
-                                <option>Белоруссия</option>
+                                <option value="Российская Федерация">Российская Федерация</option>
+                                <option value="Украина">Украина</option>
+                                <option value="Белоруссия">Белоруссия</option>
                             </select>
                     </div>
                     <div className="form-group col-md-2">
                         <label htmlFor="inputZip">Индекс</label>
                         <input 
-                            type="text" 
                             className="form-control" 
-                            id="inputZip"
+                            type="text" 
+                            name="inputZip"
+                            onChange={this.handleInputChange}
+                            value={this.state.customer.inputZip}
                             required></input>
                     </div>
                 </div>

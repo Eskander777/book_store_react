@@ -88,8 +88,8 @@ class Shop extends Component {
                                 description={book.description}
                                 code={book.code}
                                 key={book.title}
-                                imageClicked={(event) => this.imageClickedHandler(event)}
-                                addToCartClick={(event) => this.addToCartHandler(event)}
+                                imageClicked={this.imageClickedHandler}
+                                addToCartClick={this.addToCartHandler}
                                 amountChange={(event) => this.changeAmountHandler(event, book.title)}
                                 amount={book.defaultAmountToBuy}
                             />

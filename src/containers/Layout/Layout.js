@@ -24,8 +24,6 @@ class Layout extends Component {
     }
 
     render() {
-
-        console.log(this.state.showCustomerForm)
         
         return (
             <Aux>
