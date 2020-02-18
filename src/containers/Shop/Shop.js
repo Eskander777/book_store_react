@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 
 import Aux from '../../hoc/Auxiliary';
 import classes from './Shop.module.css';
-import BooksArray from '../../assets/LoadBooksFromDb';
 import Book from '../../components/Book/Book';
 import ModuleForImage from '../../components/ModuleForImage/ModuleForImage';
 import Cart from '../Cart/Cart';
+import * as firebase from 'firebase';
 
 class Shop extends Component {
     state = {
-        goods: BooksArray,
+        goods: null,
         imageSrc: ' ',
         bookName: ' ',
         showImage: false,
@@ -71,30 +71,53 @@ class Shop extends Component {
         this.setState({goods: goods});
     }
 
+    componentDidMount = () => {
+        const database = firebase.database();
+        database.ref().child("books").once("value").then ((snapshot) => {
+          const books = snapshot.val();
+          this.setState({goods: books});
+        });
+    }
+
     render() {
+
+        let loaderStyle = {
+            display: 'block'
+        }
+
+        let books;
+
+        if (this.state.goods) {
+            loaderStyle = {
+                display: 'none'
+            }
+            books = this.state.goods.map(book => {
+                return (
+                    <Book 
+                        image={book.image}
+                        price={book.price}
+                        currency={book.currency}
+                        title={book.title}
+                        description={book.description}
+                        code={book.code}
+                        key={book.title}
+                        imageClicked={this.imageClickedHandler}
+                        addToCartClick={this.addToCartHandler}
+                        amountChange={(title) => this.changeAmountHandler(title)}
+                        amount={book.defaultAmountToBuy}
+                    />
+                )
+            })
+        }
 
         const booksCssClass = classes.Books + ' row no-gutters';
     
         return (
             <Aux>
+                <div className={classes.Loader} style={loaderStyle} />
+
                 <div className={booksCssClass}>
-                    {this.state.goods.map(book => {
-                        return (
-                            <Book 
-                                image={book.image}
-                                price={book.price}
-                                currency={book.currency}
-                                title={book.title}
-                                description={book.description}
-                                code={book.code}
-                                key={book.title}
-                                imageClicked={this.imageClickedHandler}
-                                addToCartClick={this.addToCartHandler}
-                                amountChange={(event) => this.changeAmountHandler(event, book.title)}
-                                amount={book.defaultAmountToBuy}
-                            />
-                        )
-                    })}
+                    {books}         
                 </div>
 
                 <Cart 

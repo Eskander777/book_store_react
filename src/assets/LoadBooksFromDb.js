@@ -5,7 +5,7 @@ const books = [
   "price": "212",
   "currency": " ₽",
   "code": "1",
-  "amountInStock": "30",
+  "amount": "30",
   "defaultAmountToBuy": 1
   },
   {"title": "Над пропастью во ржи",
@@ -14,7 +14,7 @@ const books = [
   "price": "187",
   "currency": " ₽",
   "code": "2",
-  "amountInStock": "30",
+  "amount": "30",
   "defaultAmountToBuy": 1
   },
   {"title": "Идиот",
@@ -23,7 +23,7 @@ const books = [
   "price": "144",
   "currency": " ₽",
   "code": "3",
-  "amountInStock": "30",
+  "amount": "30",
   "defaultAmountToBuy": 1
   },
   {"title": "Преступление и наказание",
@@ -32,7 +32,7 @@ const books = [
   "price": "160",
   "currency": " ₽",
   "code": "4",
-  "amountInStock": "30",
+  "amount": "30",
   "defaultAmountToBuy": 1
   },
   {"title":"На дне",
@@ -41,7 +41,7 @@ const books = [
   "price": "96",
   "currency": " ₽",
   "code": "5",
-  "amountInStock": "30",
+  "amount": "30",
   "defaultAmountToBuy": 1
   }
   ];
