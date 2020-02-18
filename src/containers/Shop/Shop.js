@@ -16,7 +16,7 @@ class Shop extends Component {
         item: false
     }
 
-    imageClickedHandler = event => {
+    imageClickedHandler = (event) => {
         this.setState({imageSrc: event.target.src, 
                        bookName: event.target.alt,
                        showImage: true});
@@ -26,15 +26,12 @@ class Shop extends Component {
         this.setState({showImage: false});
     }
 
-    addToCartHandler = (event) => {
-        const button = event.target;
-        const shopItem = button.parentElement.parentElement.parentElement;
-        const title = shopItem.getElementsByClassName('Book_Book__description_title')[0].innerText;
-        const priceRaw = shopItem.getElementsByClassName('Book_Book__price_val__otg0p')[0].innerText;
-        const amount = parseInt(shopItem.getElementsByClassName('Book_Book__amount__ieZHe col-4')[0].value);
-        const imageSrc = shopItem.getElementsByClassName('Book_Book__image__PUXI3 rounded-circle')[0].src;
-        const code = shopItem.getElementsByClassName('Book_Book__code__a8tp2')[0].innerText;
-        const price = parseFloat(priceRaw);
+    addToCartHandler = (book) => {
+        const title = book.title;
+        const price = parseFloat(book.price);
+        const amount = book.defaultAmountToBuy;
+        const imageSrc = book.image;
+        const code = book.code;
         const total = price * amount;
         const pickedItem = {
             title: title,
@@ -52,6 +49,7 @@ class Shop extends Component {
         const bookAmountToChangeIndex = this.state.goods.findIndex(b => {
             return b.title === title;
         });
+
 
         const book =  {
             ...this.state.goods[bookAmountToChangeIndex]
@@ -73,10 +71,11 @@ class Shop extends Component {
 
     componentDidMount = () => {
         const database = firebase.database();
-        database.ref().child("books").once("value").then ((snapshot) => {
+        database.ref().child("books").once("value")
+        .then ((snapshot) => {
           const books = snapshot.val();
           this.setState({goods: books});
-        });
+        }).catch((error) => {console.log(error)});
     }
 
     render() {
@@ -94,17 +93,11 @@ class Shop extends Component {
             books = this.state.goods.map(book => {
                 return (
                     <Book 
-                        image={book.image}
-                        price={book.price}
-                        currency={book.currency}
-                        title={book.title}
-                        description={book.description}
-                        code={book.code}
+                        book={book}
                         key={book.title}
                         imageClicked={this.imageClickedHandler}
                         addToCartClick={this.addToCartHandler}
-                        amountChange={(title) => this.changeAmountHandler(title)}
-                        amount={book.defaultAmountToBuy}
+                        amountChange={(event) => this.changeAmountHandler(event, book.title)}
                     />
                 )
             })

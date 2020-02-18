@@ -13,7 +13,7 @@ const cartItem = props => {
             </td>
             <td>
                 <div>{props.title}</div>
-                <div className={classes.Cart__item_code}>{props.code}</div>
+                <div className={classes.Cart__item_code}>Артикул: {props.code}</div>
             </td>
             <td classename={classes.Cart__price}>{props.price} ₽</td>
             <td className={classes.Cart__quantity}>
