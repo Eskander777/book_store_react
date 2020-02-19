@@ -5,13 +5,13 @@ import classes from './Shop.module.css';
 import Book from '../../components/Book/Book';
 import ModuleForImage from '../../components/ModuleForImage/ModuleForImage';
 import Cart from '../Cart/Cart';
-import * as firebase from 'firebase';
+import axios from '../../axios-work';
 
 class Shop extends Component {
     state = {
         goods: null,
-        imageSrc: ' ',
-        bookName: ' ',
+        imageSrc: null,
+        bookName: null,
         showImage: false,
         item: false
     }
@@ -28,7 +28,7 @@ class Shop extends Component {
 
     addToCartHandler = (book) => {
         const title = book.title;
-        const price = parseFloat(book.price);
+        const price = book.price;
         const amount = book.defaultAmountToBuy;
         const imageSrc = book.image;
         const code = book.code;
@@ -50,7 +50,6 @@ class Shop extends Component {
             return b.title === title;
         });
 
-
         const book =  {
             ...this.state.goods[bookAmountToChangeIndex]
         };
@@ -70,12 +69,10 @@ class Shop extends Component {
     }
 
     componentDidMount = () => {
-        const database = firebase.database();
-        database.ref().child("books").once("value")
-        .then ((snapshot) => {
-          const books = snapshot.val();
-          this.setState({goods: books});
-        }).catch((error) => {console.log(error)});
+        axios.get('/books.json')
+        .then ((response) => {
+          this.setState({goods: response.data});
+        }).catch((error) => {console.log(error.message)});
     }
 
     render() {
