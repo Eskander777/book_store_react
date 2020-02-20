@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+import axios from '../../axios-work';
+
 class CustomerForm extends Component {
     state = {
         customer: {
@@ -11,7 +13,8 @@ class CustomerForm extends Component {
             inputCity: '',
             inputState: '',
             inputZip: ''
-        }
+        },
+        completeOrder: null
     }
 
     handleInputChange = (event) => {
@@ -26,15 +29,24 @@ class CustomerForm extends Component {
         this.setState({customer: customerObject})
     }
 
-    submitHandler = (event) => {
-        console.log(this.state.customer);
-        event.preventDefault();
+    submitHandler = () => {
+        const order = {...this.state}
+        console.log(order)
+        axios.post('/ordersFromReactApp.json', order)
+        .then(res => {console.log(res)})
+        .catch(er => {console.log(er)})
+    }
+
+    componentDidUpdate = (prevProps) => {
+        if (this.props.completeOrder.order && prevProps !== this.props) {
+            this.setState({completeOrder: this.props.completeOrder});
+        }
     }
 
     render() {
 
         return (
-            <form action='/customer' method="POST" onSubmit={this.submitHandler}>
+            <form onSubmit={this.submitHandler}>
                 <div className="form-row">
                     <div className="form-group col-md-6">
                         <label htmlFor="customerFirstName">Имя</label>

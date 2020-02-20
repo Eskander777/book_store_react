@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 
 import Aux from '../../hoc/Auxiliary';
 import Shop from '../Shop/Shop';
-import ModuleForCustomerForm from '../../components/ModuleForCustomerForm/ModuleForCustomerForm';
 
 
 class Layout extends Component {
     state = {
-        showCart: false,
-        showCustomerForm: false
+        showCart: false
     }
 
     showCart = () => {
@@ -17,10 +15,6 @@ class Layout extends Component {
 
     closeCart = () => {
         this.setState({showCart: false});
-    }
-
-    showCustomerForm = () => {
-        this.setState({showCustomerForm: true});
     }
 
     render() {
@@ -37,11 +31,8 @@ class Layout extends Component {
                 <main>
                     <Shop   
                         showCart={this.state.showCart} 
-                        closeCartClick={this.closeCart}
-                        showCustomerForm={this.showCustomerForm} />
+                        closeCartClick={this.closeCart} />
                 </main>
-
-                <ModuleForCustomerForm showModule={this.state.showCustomerForm} />
             </Aux>
         )
     }

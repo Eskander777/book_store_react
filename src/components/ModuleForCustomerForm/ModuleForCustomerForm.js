@@ -17,7 +17,7 @@ const moduleForCustomerForm = (props) => {
     return (
         <div className={classes.Module_for_customer} style={modalStyle}>
             <div className={classes.Module_for_customer__content}>
-                <CustomerForm />
+                <CustomerForm completeOrder={props.completeOrder} />
             </div>
         </div>
     )

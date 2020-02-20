@@ -113,7 +113,6 @@ class Shop extends Component {
                 <Cart 
                     showCart={this.props.showCart}
                     closeCartClick={this.props.closeCartClick}
-                    showCustomerForm={this.props.showCustomerForm}
                     item={this.state.item} />
 
                 <ModuleForImage 

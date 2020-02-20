@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 
 import classes from './Cart.module.css';
 import CartItem from '../../components/CartItem/CartItem';
+import ModuleForCustomerForm from '../../components/ModuleForCustomerForm/ModuleForCustomerForm';
 
 class Cart extends Component {
     state = {
+        showCustomerForm: false,
         completeOrder: {
             order: false,
             orderTotal: {
@@ -69,8 +71,6 @@ class Cart extends Component {
     }
 
     componentDidUpdate = (prevProps) => {
-        console.log('[componentDidUpdate]');
-        console.log(this.state)
         const shopItem = this.props.item;
         if (shopItem) {
             if (this.state.completeOrder.order) {
@@ -115,6 +115,10 @@ class Cart extends Component {
                 alert("Товар успешно добавлен!");
             }
         }
+    }
+
+    showCustomerForm = () => {
+        this.setState({showCustomerForm: true});
     }
     
     render() {
@@ -176,12 +180,15 @@ class Cart extends Component {
                                 <div className="col text-center">
                                     <button 
                                         className="btn btn-success" 
-                                        onClick={this.props.showCustomerForm}
+                                        onClick={this.showCustomerForm}
                                         >Сформировать заказ</button>
                                 </div>
                             </div>
                     </div>
                 </div>
+                <ModuleForCustomerForm 
+                    showModule={this.state.showCustomerForm}
+                    completeOrder={this.state.completeOrder} />
             </div>
         )
     }
