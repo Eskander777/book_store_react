@@ -12,7 +12,15 @@ class Cart extends Component {
     }
 
     showCustomerForm = () => {
-        this.setState({showCustomerForm: true});
+        let customerFormShow = this.state;
+        customerFormShow = {showCustomerForm: true};
+        this.setState({showCustomerForm: customerFormShow.showCustomerForm});
+    }
+
+    closeCustomerForm = () => {
+        let customerFormShow = this.state;
+        customerFormShow = {showCustomerForm: false};
+        this.setState({showCustomerForm: customerFormShow.showCustomerForm});
     }
     
     render() {
@@ -32,16 +40,15 @@ class Cart extends Component {
                 ));
         }
 
-        const modalStyle = {
-            display: 'none'
-        };
+        let customerForm;
 
-        if (this.props.showCart) {
-            modalStyle.display = "block";
-        }
+        this.state.showCustomerForm ? customerForm = <ModuleForCustomerForm 
+            closeCustomerForm={this.closeCustomerForm}
+            showModule={this.state.showCustomerForm}
+            completeOrder={this.props.completeOrder} /> : customerForm = null
 
         return (
-            <div className={classes.Cart_Modal} style={modalStyle}>
+            this.props.showCart ? <div className={classes.Cart_Modal}>
                 <div className={classes.Cart_Modal__content} >
                     <span className={classes.Close} onClick={this.props.closeCartClick}>×</span>
                     <div className="cart container">
@@ -77,10 +84,8 @@ class Cart extends Component {
                             </div>
                     </div>
                 </div>
-                <ModuleForCustomerForm 
-                    showModule={this.state.showCustomerForm}
-                    completeOrder={this.props.completeOrder} />
-            </div>
+                    {customerForm}
+            </div> : null
         )
     }
 }

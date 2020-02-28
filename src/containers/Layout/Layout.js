@@ -10,11 +10,15 @@ class Layout extends Component {
     }
 
     showCart = () => {
-        this.setState({showCart: true});
+        let cartShowState =  {...this.state};
+        cartShowState = {showCart: true};
+        this.setState({showCart: cartShowState.showCart});
     }
 
     closeCart = () => {
-        this.setState({showCart: false});
+        let cartShowState =  {...this.state};
+        cartShowState = {showCart: false};
+        this.setState({showCart: cartShowState.showCart});
     }
 
     render() {

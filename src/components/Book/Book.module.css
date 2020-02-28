@@ -20,7 +20,8 @@
 }
 
 .Book__image:hover {
-    opacity: .7
+    opacity: .7;
+    cursor: pointer
 }
 
 .Book__price {

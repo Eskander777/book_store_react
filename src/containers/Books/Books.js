@@ -8,16 +8,18 @@ import axios from '../../axios-work';
 
 class Books extends Component {
     state = {
-        goods: null,
-        imageSrc: null,
-        bookName: null,
+        goods: [],
+        imageSrc: false,
+        bookName: false,
         showImage: false
     }
 
     componentDidMount = () => {
+        let books = {...this.state.goods};
         axios.get('/books.json')
         .then ((response) => {
-          this.setState({goods: response.data});
+          books = response.data;
+          this.setState({goods: books});
         }).catch((error) => {console.log(error.message)});
     }
 
@@ -57,17 +59,19 @@ class Books extends Component {
     
     
     render() {
-
-        let loaderStyle = {
-            display: 'block'
-        }
-
         let books;
+        let preloader = <div className={classes.Loader}/>;
+        let moduleForImage;
 
-        if (this.state.goods) {
-            loaderStyle = {
-                display: 'none'
-            }
+        this.state.showImage ? moduleForImage = <ModuleForImage 
+            imageSrc={this.state.imageSrc}  
+            bookName={this.state.bookName} 
+            showState={this.state.showImage}
+            closeClick={this.closeImageHandler} 
+            /> : moduleForImage = null;
+
+        if (this.state.goods.length !== 0) {
+            preloader = null;
             books = this.state.goods.map(book => {
                 return (
                     <Book 
@@ -85,17 +89,13 @@ class Books extends Component {
 
         return (
             <Aux>
-                <div className={classes.Loader} style={loaderStyle} />
+                {preloader}
 
                 <div className={booksCssClass}>
                     {books}         
                 </div>
 
-                <ModuleForImage 
-                    imageSrc={this.state.imageSrc}  
-                    bookName={this.state.bookName} 
-                    showState={this.state.showImage}
-                    closeClick={this.closeImageHandler} />
+                {moduleForImage}
             </Aux>
         )
     }

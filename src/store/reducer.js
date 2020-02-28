@@ -68,6 +68,8 @@ const reducer = (state = initialState, action) => {
                         totalAmount: updatedOrderTotalAmount
                     }
 
+                    alert('Еще ' + pickedItem.amount + ' единиц "' + pickedItem.title + '" добавлено в корзину.');
+
                     return {
                         ...state,
                         completeOrder: {

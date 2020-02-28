@@ -32,7 +32,6 @@ class CustomerForm extends Component {
     submitHandler = (event) => {
         event.preventDefault();
         const order = {...this.state};
-        console.log(order.completeOrder.order.length)
         if (order.completeOrder && order.completeOrder.order.length !== 0) {
             axios.post('/ordersFromReactApp.json', order)
                 .then(res => {console.log(res);
@@ -47,10 +46,8 @@ class CustomerForm extends Component {
 
     }
 
-    componentDidUpdate = (prevProps) => {
-        if (this.props.completeOrder.order && prevProps !== this.props) {
-            this.setState({completeOrder: this.props.completeOrder});
-        }
+    componentDidMount = () => {
+        this.setState({completeOrder: this.props.completeOrder});
     }
 
     render() {
@@ -154,10 +151,12 @@ class CustomerForm extends Component {
                 <input 
                     type="submit" 
                     className="btn btn-outline-success"></input>
-                <a 
+                <button 
+                    type="button" 
+                    onClick={this.props.closeCustomerForm}
                     className="btn btn-outline-danger" 
                     style={{marginLeft: '10px'}} 
-                    href="/">Отмена</a>
+                    href="/">Отмена</button>
             </form>
         )
     }
