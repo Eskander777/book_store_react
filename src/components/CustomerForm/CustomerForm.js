@@ -29,12 +29,22 @@ class CustomerForm extends Component {
         this.setState({customer: customerObject})
     }
 
-    submitHandler = () => {
-        const order = {...this.state}
-        console.log(order)
-        axios.post('/ordersFromReactApp.json', order)
-        .then(res => {console.log(res)})
-        .catch(er => {console.log(er)})
+    submitHandler = (event) => {
+        event.preventDefault();
+        const order = {...this.state};
+        console.log(order.completeOrder.order.length)
+        if (order.completeOrder && order.completeOrder.order.length !== 0) {
+            axios.post('/ordersFromReactApp.json', order)
+                .then(res => {console.log(res);
+                              alert('Заказ добавлен к заказам');
+                              window.location.reload()})
+                .catch(er => {console.log(er);
+                              alert('Ошибка, попробуйте позже.')
+                              window.location.reload()})
+        } else {
+            alert('Вы не добавили товары в заказ!')
+        }
+
     }
 
     componentDidUpdate = (prevProps) => {
