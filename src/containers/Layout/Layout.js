@@ -6,19 +6,29 @@ import Shop from '../Shop/Shop';
 
 class Layout extends Component {
     state = {
-        showCart: false
+        showCart: false,
+        showCustomerFormState: false
     }
 
     showCart = () => {
-        let cartShowState =  {...this.state};
-        cartShowState = {showCart: true};
-        this.setState({showCart: cartShowState.showCart});
+        this.setState({...this.state,
+            showCart: true});
     }
 
     closeCart = () => {
-        let cartShowState =  {...this.state};
-        cartShowState = {showCart: false};
-        this.setState({showCart: cartShowState.showCart});
+        this.setState({...this.state,
+            showCart: false});
+    }
+
+    showCustomerFormHandler = () => {
+        this.setState({...this.state,
+            showCustomerFormState: true});
+    }
+
+    closeCustomerFormHandler = () => {
+        this.setState({...this.state,
+            showCustomerFormState: false
+        });
     }
 
     render() {
@@ -35,7 +45,10 @@ class Layout extends Component {
                 <main>
                     <Shop   
                         showCart={this.state.showCart} 
-                        closeCartClick={this.closeCart} />
+                        closeCartClick={this.closeCart}
+                        showCustomerFormState={this.state.showCustomerFormState}
+                        showCustomerForm={this.showCustomerFormHandler}
+                        closeCustomerForm={this.closeCustomerFormHandler} />
                 </main>
             </Aux>
         )

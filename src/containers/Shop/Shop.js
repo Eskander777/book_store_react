@@ -14,7 +14,10 @@ class Shop extends Component {
 
                 <Cart 
                     showCart={this.props.showCart}
-                    closeCartClick={this.props.closeCartClick} />
+                    closeCartClick={this.props.closeCartClick}
+                    showCustomerFormState={this.props.showCustomerFormState}
+                    showCustomerForm={this.props.showCustomerForm}
+                    closeCustomerForm={this.props.closeCustomerForm} />
             </Aux>
         );    
     }

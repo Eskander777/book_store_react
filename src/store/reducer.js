@@ -1,6 +1,16 @@
 import * as actionTypes from './actions';
 
 const initialState = {
+    customer: {
+        customerFirstName: '',
+        customerLastName: '',
+        inputEmail4: '',
+        inputPassword4: '',
+        inputAddress: '',
+        inputCity: '',
+        inputState: '',
+        inputZip: ''
+    },
     completeOrder: {
         order: false,
         orderTotal: {
@@ -154,6 +164,19 @@ const reducer = (state = initialState, action) => {
                     order: orderArray, 
                     orderTotal: updatedOrderTotal
                 }
+            }
+        } else if (action.type === actionTypes.INPUT_CUSTOMER_DATA) {
+            const target = action.customerData.target;
+            const customerObject = {...state.customer};
+    
+            const paramToChange = target.name
+            const paramValue = target.value
+    
+            customerObject[paramToChange] = paramValue;
+
+            return {
+                ...state,
+                customer: customerObject
             }
         }
     }

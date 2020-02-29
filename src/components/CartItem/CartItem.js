@@ -13,9 +13,11 @@ const cartItem = props => {
             </td>
             <td>
                 <div>{props.cartItem.title}</div>
-                <div className={classes.Cart__item_code}>Артикул: {props.cartItem.code}</div>
+                <div className={classes.Cart__item_code}
+                    >Артикул: {props.cartItem.code}</div>
             </td>
-            <td classename={classes.Cart__price}>{props.cartItem.price} ₽</td>
+            <td classename={classes.Cart__price}
+                >{props.cartItem.price} ₽</td>
             <td className={classes.Cart__quantity}>
                 <input 
                     className={classes.Cart__quantity_input} 
@@ -32,7 +34,8 @@ const cartItem = props => {
                         )}
                     >Убрать</button>
             </td>
-            <td className={classes.Cart__item_total_price}>{props.cartItem.total} ₽</td>
+            <td className={classes.Cart__item_total_price}
+                >{props.cartItem.total} ₽</td>
         </tr>
     )
 };

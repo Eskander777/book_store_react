@@ -3,28 +3,14 @@ import {connect} from 'react-redux';
 
 import classes from './Cart.module.css';
 import CartItem from '../../components/CartItem/CartItem';
-import ModuleForCustomerForm from '../../components/ModuleForCustomerForm/ModuleForCustomerForm';
+import ModuleForCustomerForm from '../ModuleForCustomerForm/ModuleForCustomerForm';
 import * as actionTypes from '../../store/actions';
 
 class Cart extends Component {
-    state = {
-        showCustomerForm: false
-    }
-
-    showCustomerForm = () => {
-        let customerFormShow = this.state;
-        customerFormShow = {showCustomerForm: true};
-        this.setState({showCustomerForm: customerFormShow.showCustomerForm});
-    }
-
-    closeCustomerForm = () => {
-        let customerFormShow = this.state;
-        customerFormShow = {showCustomerForm: false};
-        this.setState({showCustomerForm: customerFormShow.showCustomerForm});
-    }
     
     render() {
         let cartItems;
+        let customerForm;
 
         if (this.props.completeOrder.order) {
             const cartOrder = this.props.completeOrder.order;
@@ -33,19 +19,15 @@ class Cart extends Component {
                     cartItem={item}
                     changeCartAmount={(event) => this.props.onAmountChange(
                         event.target.value, 
-                        item.title
-                        )}
+                        item.title)}
                     deleteItem={this.props.onRemovedItem}
                     key={item.code} />
                 ));
         }
 
-        let customerForm;
-
-        this.state.showCustomerForm ? customerForm = <ModuleForCustomerForm 
-            closeCustomerForm={this.closeCustomerForm}
-            showModule={this.state.showCustomerForm}
-            completeOrder={this.props.completeOrder} /> : customerForm = null
+        this.props.showCustomerFormState ? customerForm = <ModuleForCustomerForm 
+            closeCustomerForm={this.props.closeCustomerForm}
+            /> : customerForm = null
 
         return (
             this.props.showCart ? <div className={classes.Cart_Modal}>
@@ -78,7 +60,7 @@ class Cart extends Component {
                                 <div className="col text-center">
                                     <button 
                                         className="btn btn-success" 
-                                        onClick={this.showCustomerForm}
+                                        onClick={this.props.showCustomerForm}
                                         >Сформировать заказ</button>
                                 </div>
                             </div>

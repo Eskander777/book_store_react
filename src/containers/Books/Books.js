@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import Aux from '../../hoc/Auxiliary';
 import Book from '../../components/Book/Book';
-import ModuleForImage from '../../components/ModuleForImage/ModuleForImage';
+import ModuleForImage from '../ModuleForImage/ModuleForImage';
 import classes from './Books.module.css';
 import axios from '../../axios-work';
 
@@ -19,19 +19,22 @@ class Books extends Component {
         axios.get('/books.json')
         .then ((response) => {
           books = response.data;
-          this.setState({goods: books});
+          this.setState({...this.state,
+                         goods: books});
         }).catch((error) => {console.log(error.message)});
     }
 
     
     imageClickedHandler = (event) => {
-        this.setState({imageSrc: event.target.src, 
+        this.setState({...this.state,
+                       imageSrc: event.target.src, 
                        bookName: event.target.alt,
                        showImage: true});
     }
 
     closeImageHandler = () => {
-        this.setState({showImage: false});
+        this.setState({...this.state,
+                       showImage: false});
     }
 
     changeAmountHandler = (event, title) => {
@@ -54,7 +57,8 @@ class Books extends Component {
         const goods = [...this.state.goods];
         goods[bookAmountToChangeIndex] = book;
 
-        this.setState({goods: goods});
+        this.setState({...this.state,
+                       goods: goods});
     }
     
     
@@ -66,7 +70,6 @@ class Books extends Component {
         this.state.showImage ? moduleForImage = <ModuleForImage 
             imageSrc={this.state.imageSrc}  
             bookName={this.state.bookName} 
-            showState={this.state.showImage}
             closeClick={this.closeImageHandler} 
             /> : moduleForImage = null;
 
