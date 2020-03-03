@@ -1,75 +1,75 @@
 .Book {
-    border: 1px solid white;
-    padding-top: 30px;
-    padding-bottom: 10px;
-    min-width: 280px;
-    max-width: 350px
+  border: 1px solid white;
+  padding-top: 30px;
+  padding-bottom: 10px;
+  min-width: 280px;
+  max-width: 350px;
 }
 
 .Book:hover {
-    border: 1px solid black;
+  border: 1px solid black;
 }
 
 .Book__image_container {
-    text-align: center;
+  text-align: center;
 }
 
 .Book__image {
-    width: 200px;
-    height: 200px;
+  width: 200px;
+  height: 200px;
 }
 
 .Book__image:hover {
-    opacity: .7;
-    cursor: pointer
+  opacity: 0.7;
+  cursor: pointer;
 }
 
 .Book__price {
-    font: 17px PTSansB, Tahoma, sans-serif;
-    position: static;
-    padding: 15px 40px 0;
+  font: 17px PTSansB, Tahoma, sans-serif;
+  position: static;
+  padding: 15px 40px 0;
 }
 
 .Book__price_val {
-    font-weight: 700
+  font-weight: 700;
 }
 
 .Book__description_container {
-    padding: 15px 40px 30px;
+  padding: 15px 40px 30px;
 }
 
 .Book__description {
-    margin: 2px;
-    margin-right: 5px
+  margin: 2px;
+  margin-right: 5px;
 }
 
 .Book__code {
-    color: grey
+  color: grey;
 }
 
 .Book__actions_container {
-    padding: 15px 40px;
+  padding: 15px 40px;
 }
 
 .Book__actions {
-    width: 150px
+  width: 150px;
 }
 
 .Book__amount {
-    padding: 3px;
-    width: 115px;
-    border-radius: 5px;
-    border: 1px solid #56CCF2;
-    background-color: #eee;
-    color: #333;
-    padding: 0;
-    font-size: 1.2em;
-    margin-right: 25px
+  padding: 3px;
+  width: 115px;
+  border-radius: 5px;
+  border: 1px solid #56ccf2;
+  background-color: #eee;
+  color: #333;
+  padding: 0;
+  font-size: 1.2em;
+  margin-right: 25px;
 }
 
 .Book__button {
-    margin-top: 10px;
-    font-weight: 700;
-    font-size: 14px;
-    width: 150%;
+  margin-top: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  width: 150%;
 }
