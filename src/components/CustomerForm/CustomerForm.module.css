@@ -1,0 +1,13 @@
+.CancelButton {
+  margin-left: 10px;
+}
+
+@media (max-width: 359px) {
+  .CancelButton {
+    margin-top: 10px;
+    margin-left: 0;
+  }
+  .ConfirmButton {
+    margin-right: 10px;
+  }
+}

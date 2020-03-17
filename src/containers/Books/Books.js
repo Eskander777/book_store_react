@@ -20,7 +20,7 @@ class Books extends Component {
       .get('/books.json')
       .then(response => {
         books = response.data;
-        this.setState({ ...this.state, goods: books });
+        this.setState({ goods: books });
       })
       .catch(error => {
         console.log(error.message);
@@ -37,7 +37,7 @@ class Books extends Component {
   };
 
   closeImageHandler = () => {
-    this.setState({ ...this.state, showImage: false });
+    this.setState({ showImage: false });
   };
 
   changeAmountHandler = (event, title) => {
@@ -60,7 +60,7 @@ class Books extends Component {
     const goods = [...this.state.goods];
     goods[bookAmountToChangeIndex] = book;
 
-    this.setState({ ...this.state, goods: goods });
+    this.setState({ goods: goods });
   };
 
   render() {

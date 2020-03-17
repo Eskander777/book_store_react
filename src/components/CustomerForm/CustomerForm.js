@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import axios from '../../axios-work';
+import classes from './CustomerForm.module.css';
 import * as actionTypes from '../../store/actions';
 
 class CustomerForm extends Component {
@@ -27,6 +28,10 @@ class CustomerForm extends Component {
   };
 
   render() {
+    const cancelButtonClass = 'btn btn-outline-danger ' + classes.CancelButton;
+    const confirmButtonClass =
+      'btn btn-outline-success ' + classes.ConfirmButton;
+
     return (
       <form onSubmit={this.submitHandler}>
         <div className="form-row">
@@ -133,12 +138,11 @@ class CustomerForm extends Component {
             />
           </div>
         </div>
-        <input type="submit" className="btn btn-outline-success" />
+        <input type="submit" className={confirmButtonClass} />
         <button
           type="button"
           onClick={this.props.closeCustomerForm}
-          className="btn btn-outline-danger"
-          style={{ marginLeft: '10px' }}
+          className={cancelButtonClass}
         >
           Отмена
         </button>
