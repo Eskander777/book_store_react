@@ -9,20 +9,33 @@ const initialState = {
     inputAddress: '',
     inputCity: '',
     inputState: '',
-    inputZip: ''
+    inputZip: '',
   },
   completeOrder: {
-    order: false,
+    order: null,
     orderTotal: {
       totalPrice: 0,
-      totalAmount: 0
+      totalAmount: 0,
+    },
+  },
+};
+
+const changeCartItemsNumber = (titleToChangeAmount, presentOrder) => {
+  let item;
+  let itemToChangeIndex;
+
+  presentOrder.forEach((itm, idx) => {
+    if (itm.title === titleToChangeAmount) {
+      item = itm;
+      itemToChangeIndex = idx;
     }
-  }
+  });
+  return [item, itemToChangeIndex];
 };
 
 const reducer = (state = initialState, action) => {
-  if (action.type) {
-    if (action.type === actionTypes.ADDED_TO_CART) {
+  switch (action.type) {
+    case actionTypes.ADDED_TO_CART:
       const amount = action.item.defaultAmountToBuy;
       const total = amount * action.item.price;
       const pickedItem = {
@@ -31,12 +44,12 @@ const reducer = (state = initialState, action) => {
         amount: amount,
         imageSrc: action.item.image,
         code: action.item.code,
-        total: total
+        total: total,
       };
 
       if (state.completeOrder.order) {
         const orderArray = [...state.completeOrder.order];
-        const orderArrayTitles = orderArray.map(item => {
+        const orderArrayTitles = orderArray.map((item) => {
           return item.title;
         });
         const orderTotal = { ...state.completeOrder.orderTotal };
@@ -50,7 +63,7 @@ const reducer = (state = initialState, action) => {
             orderTotal.totalPrice + pickedItem.total;
           const updatedOrderTotal = {
             totalPrice: updatedOrderTotalPrice,
-            totalAmount: updatedOrderTotalAmount
+            totalAmount: updatedOrderTotalAmount,
           };
           alert('Товар успешно добавлен!');
 
@@ -58,15 +71,15 @@ const reducer = (state = initialState, action) => {
             ...state,
             completeOrder: {
               order: orderArray,
-              orderTotal: updatedOrderTotal
-            }
+              orderTotal: updatedOrderTotal,
+            },
           };
         } else {
-          const itemToAddAmountIndex = orderArray.findIndex(i => {
-            return i.title === pickedItem.title;
-          });
+          const [itemToAddAmount, itemToAddAmountIndex] = changeCartItemsNumber(
+            pickedItem.title,
+            orderArray
+          );
 
-          const itemToAddAmount = orderArray[itemToAddAmountIndex];
           const updatedAmount = itemToAddAmount.amount + pickedItem.amount;
           itemToAddAmount.amount = updatedAmount;
           const itemToAddTotalPrice =
@@ -80,23 +93,19 @@ const reducer = (state = initialState, action) => {
             orderTotal.totalPrice + pickedItem.total;
           const updatedOrderTotal = {
             totalPrice: updatedOrderTotalPrice,
-            totalAmount: updatedOrderTotalAmount
+            totalAmount: updatedOrderTotalAmount,
           };
 
           alert(
-            'Еще ' +
-              pickedItem.amount +
-              ' единиц "' +
-              pickedItem.title +
-              '" добавлено в корзину.'
+            `Еще ${pickedItem.amount} единиц ${pickedItem.title} добавлено в корзину.`
           );
 
           return {
             ...state,
             completeOrder: {
               order: orderArray,
-              orderTotal: updatedOrderTotal
-            }
+              orderTotal: updatedOrderTotal,
+            },
           };
         }
       } else {
@@ -110,47 +119,46 @@ const reducer = (state = initialState, action) => {
             order: orderArray,
             orderTotal: {
               totalPrice: pickedItem.total,
-              totalAmount: pickedItem.amount
-            }
-          }
+              totalAmount: pickedItem.amount,
+            },
+          },
         };
       }
-    } else if (action.type === actionTypes.REMOVED_FROM_CART) {
-      const orderArray = [...state.completeOrder.order];
-      const orderTotal = { ...state.completeOrder.orderTotal };
+    case actionTypes.REMOVED_FROM_CART:
+      let orderArray = [...state.completeOrder.order];
+      let orderTotal = { ...state.completeOrder.orderTotal };
 
       const updatedOrderArray = orderArray.filter(
-        book => book.title !== action.titleToDelete
+        (book) => book.title !== action.titleToDelete
       );
 
-      const updatedOrderTotalAmount =
+      let updatedOrderTotalAmount =
         orderTotal.totalAmount - action.amountToDelete;
-      const updatedOrderTotalPrice = orderTotal.totalPrice - action.sumToDelete;
+      let updatedOrderTotalPrice = orderTotal.totalPrice - action.sumToDelete;
 
-      const updatedOrderTotal = {
+      let updatedOrderTotal = {
         totalPrice: updatedOrderTotalPrice,
-        totalAmount: updatedOrderTotalAmount
+        totalAmount: updatedOrderTotalAmount,
       };
 
       return {
         ...state,
         completeOrder: {
           order: updatedOrderArray,
-          orderTotal: updatedOrderTotal
-        }
+          orderTotal: updatedOrderTotal,
+        },
       };
-    } else if (action.type === actionTypes.AMOUNT_CHANGED) {
-      const itemToChangeIndex = state.completeOrder.order.findIndex(i => {
-        return i.title === action.changedAmountTitle;
-      });
-      const orderTotal = { ...state.completeOrder.orderTotal };
+    case actionTypes.AMOUNT_CHANGED:
+      let orderTotalToChange = { ...state.completeOrder.orderTotal };
 
-      const item = {
-        ...state.completeOrder.order[itemToChangeIndex]
-      };
+      const [item, itemToChangeIndex] = changeCartItemsNumber(
+        action.changedAmountTitle,
+        state.completeOrder.order
+      );
 
-      let updatedOrderTotalAmount = orderTotal.totalAmount - item.amount;
-      let updatedOrderTotalPrice = orderTotal.totalPrice - item.total;
+      let orderTotalAmountToUpdate =
+        orderTotalToChange.totalAmount - item.amount;
+      let orderTotalPriceToUpdate = orderTotalToChange.totalPrice - item.total;
 
       let input = parseInt(action.changedAmount);
       if (isNaN(input) || input <= 0 || input >= 1000) {
@@ -161,25 +169,25 @@ const reducer = (state = initialState, action) => {
       const itemTotalPrice = item.amount * item.price;
       item.total = itemTotalPrice;
 
-      const orderArray = [...state.completeOrder.order];
-      orderArray[itemToChangeIndex] = item;
+      let orderArrayToUpdate = [...state.completeOrder.order];
+      orderArrayToUpdate[itemToChangeIndex] = item;
 
-      updatedOrderTotalAmount += item.amount;
-      updatedOrderTotalPrice += item.total;
+      orderTotalAmountToUpdate += item.amount;
+      orderTotalPriceToUpdate += item.total;
 
-      const updatedOrderTotal = {
-        totalPrice: updatedOrderTotalPrice,
-        totalAmount: updatedOrderTotalAmount
+      let orderTotalToUpdate = {
+        totalPrice: orderTotalPriceToUpdate,
+        totalAmount: orderTotalAmountToUpdate,
       };
 
       return {
         ...state,
         completeOrder: {
-          order: orderArray,
-          orderTotal: updatedOrderTotal
-        }
+          order: orderArrayToUpdate,
+          orderTotal: orderTotalToUpdate,
+        },
       };
-    } else if (action.type === actionTypes.INPUT_CUSTOMER_DATA) {
+    case actionTypes.INPUT_CUSTOMER_DATA:
       const target = action.customerData.target;
       const customerObject = { ...state.customer };
 
@@ -190,11 +198,11 @@ const reducer = (state = initialState, action) => {
 
       return {
         ...state,
-        customer: customerObject
+        customer: customerObject,
       };
-    }
+    default:
+      return state;
   }
-  return state;
 };
 
 export default reducer;

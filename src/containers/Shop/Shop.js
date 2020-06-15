@@ -24,12 +24,6 @@ class Shop extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    completeOrder: state.completeOrder
-  };
-};
-
 const mapDispatchToProps = dispatch => {
   return {
     onAddedToCart: book =>
@@ -37,4 +31,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Shop);
+export default connect(null, mapDispatchToProps)(Shop);

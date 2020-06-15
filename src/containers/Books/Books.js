@@ -11,28 +11,28 @@ class Books extends Component {
     goods: [],
     imageSrc: false,
     bookName: false,
-    showImage: false
+    showImage: false,
   };
 
   componentDidMount = () => {
     let books = { ...this.state.goods };
     axios
       .get('/books.json')
-      .then(response => {
+      .then((response) => {
         books = response.data;
         this.setState({ goods: books });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error.message);
       });
   };
 
-  imageClickedHandler = event => {
+  imageClickedHandler = (event) => {
     this.setState({
       ...this.state,
       imageSrc: event.target.src,
       bookName: event.target.alt,
-      showImage: true
+      showImage: true,
     });
   };
 
@@ -41,15 +41,17 @@ class Books extends Component {
   };
 
   changeAmountHandler = (event, title) => {
-    const bookAmountToChangeIndex = this.state.goods.findIndex(b => {
-      return b.title === title;
+    let book;
+    let bookAmountToChangeIndex;
+
+    this.state.goods.forEach((b, i) => {
+      if (b.title === title) {
+        book = b;
+        bookAmountToChangeIndex = i;
+      }
     });
 
-    const book = {
-      ...this.state.goods[bookAmountToChangeIndex]
-    };
-
-    let amount = parseInt(event.target.value);
+    let amount = event.target.valueAsNumber;
 
     if (isNaN(amount) || amount <= 0 || amount >= 1000) {
       amount = 1;
@@ -66,42 +68,35 @@ class Books extends Component {
   render() {
     let books;
     let preloader = <div className={classes.Loader} />;
-    let moduleForImage;
 
-    this.state.showImage
-      ? (moduleForImage = (
-          <ModuleForImage
-            imageSrc={this.state.imageSrc}
-            bookName={this.state.bookName}
-            closeClick={this.closeImageHandler}
-          />
-        ))
-      : (moduleForImage = null);
-
-    if (this.state.goods.length !== 0) {
+    if (this.state.goods.length > 0) {
       preloader = null;
-      books = this.state.goods.map(book => {
+      books = this.state.goods.map((book) => {
         return (
           <Book
             book={book}
             key={book.title}
             imageClicked={this.imageClickedHandler}
             addToCartClick={this.props.addToCart}
-            amountChange={event => this.changeAmountHandler(event, book.title)}
+            amountChange={(event) =>
+              this.changeAmountHandler(event, book.title)
+            }
           />
         );
       });
     }
 
-    const booksCssClass = classes.Books + ' row no-gutters';
-
     return (
       <Aux>
         {preloader}
-
-        <div className={booksCssClass}>{books}</div>
-
-        {moduleForImage}
+        <div className={`${classes.Books} row no-gutters`}>{books}</div>
+        {this.state.showImage ? (
+          <ModuleForImage
+            imageSrc={this.state.imageSrc}
+            bookName={this.state.bookName}
+            closeClick={this.closeImageHandler}
+          />
+        ) : null}
       </Aux>
     );
   }

@@ -2,12 +2,9 @@ import React from 'react';
 
 import classes from './ModuleForImage.module.css';
 
-const moduleForImage = props => {
+const moduleForImage = (props) => {
   return (
-    <div className={classes.Modal_for_image}>
-      <span className={classes.closeImageModal} onClick={props.closeClick}>
-        ×
-      </span>
+    <div className={classes.Modal_for_image} onClick={props.closeClick}>
       <img
         className={classes.Modal_image__content}
         src={props.imageSrc}
