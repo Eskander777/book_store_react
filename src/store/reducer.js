@@ -20,7 +20,7 @@ const initialState = {
   },
 };
 
-const changeCartItemsNumber = (titleToChangeAmount, presentOrder) => {
+const getItemAndIndex = (titleToChangeAmount, presentOrder) => {
   let item;
   let itemToChangeIndex;
 
@@ -51,6 +51,21 @@ const updateTotalAmount = (item, order, symbol) => {
   return {
     totalPrice: updatedOrderTotalPrice,
     totalAmount: updatedOrderTotalAmount,
+  };
+};
+
+const updateCartItem = (item) => {
+  const itemTotalPrice = item.amount * item.price;
+  return itemTotalPrice;
+};
+
+const returnState = (state, orderArray, updatedOrderTotal) => {
+  return {
+    ...state,
+    completeOrder: {
+      order: orderArray,
+      orderTotal: updatedOrderTotal,
+    },
   };
 };
 
@@ -85,24 +100,22 @@ const reducer = (state = initialState, action) => {
           );
           alert('Товар успешно добавлен!');
 
-          return {
-            ...state,
-            completeOrder: {
-              order: orderArray,
-              orderTotal: updatedOrderTotal,
-            },
-          };
+          const stateToReturn = returnState(
+            state,
+            orderArray,
+            updatedOrderTotal
+          );
+
+          return stateToReturn;
         } else {
-          const [itemToAddAmount, itemToAddAmountIndex] = changeCartItemsNumber(
+          const [itemToAddAmount, itemToAddAmountIndex] = getItemAndIndex(
             pickedItem.title,
             orderArray
           );
 
-          const updatedAmount = itemToAddAmount.amount + pickedItem.amount;
-          itemToAddAmount.amount = updatedAmount;
-          const itemToAddTotalPrice =
-            itemToAddAmount.amount * itemToAddAmount.price;
-          itemToAddAmount.total = itemToAddTotalPrice;
+          itemToAddAmount.amount += pickedItem.amount;
+          itemToAddAmount.total = updateCartItem(itemToAddAmount);
+
           orderArray[itemToAddAmountIndex] = itemToAddAmount;
 
           const updatedOrderTotal = updateTotalAmount(
@@ -115,13 +128,13 @@ const reducer = (state = initialState, action) => {
             `Еще ${pickedItem.amount} единиц ${pickedItem.title} добавлено в корзину.`
           );
 
-          return {
-            ...state,
-            completeOrder: {
-              order: orderArray,
-              orderTotal: updatedOrderTotal,
-            },
-          };
+          const stateToReturn = returnState(
+            state,
+            orderArray,
+            updatedOrderTotal
+          );
+
+          return stateToReturn;
         }
       } else {
         let newOrderArray = [];
@@ -139,8 +152,7 @@ const reducer = (state = initialState, action) => {
           },
         };
       }
-    case actionTypes.REMOVED_FROM_CART:
-      console.log(action);
+    case actionTypes.REMOVED_FROM_CART: {
       const orderArray = [...state.completeOrder.order];
       let orderTotal = { ...state.completeOrder.orderTotal };
 
@@ -154,52 +166,45 @@ const reducer = (state = initialState, action) => {
         '-'
       );
 
-      return {
-        ...state,
-        completeOrder: {
-          order: updatedOrderArray,
-          orderTotal: updatedOrderTotal,
-        },
-      };
-    case actionTypes.AMOUNT_CHANGED:
+      const stateToReturn = returnState(
+        state,
+        updatedOrderArray,
+        updatedOrderTotal
+      );
+
+      return stateToReturn;
+    }
+    case actionTypes.AMOUNT_CHANGED: {
       let orderTotalToChange = { ...state.completeOrder.orderTotal };
 
-      const [item, itemToChangeIndex] = changeCartItemsNumber(
+      const [item, itemToChangeIndex] = getItemAndIndex(
         action.changedAmountTitle,
         state.completeOrder.order
       );
 
-      let orderTotalAmountToUpdate =
-        orderTotalToChange.totalAmount - item.amount;
-      let orderTotalPriceToUpdate = orderTotalToChange.totalPrice - item.total;
+      const orderTotalRaw = updateTotalAmount(item, orderTotalToChange, '-');
 
       let input = parseInt(action.changedAmount);
+
       if (isNaN(input) || input <= 0 || input >= 1000) {
         input = 1;
       }
       item.amount = input;
-
-      const itemTotalPrice = item.amount * item.price;
-      item.total = itemTotalPrice;
+      item.total = updateCartItem(item);
 
       let orderArrayToUpdate = [...state.completeOrder.order];
       orderArrayToUpdate[itemToChangeIndex] = item;
 
-      orderTotalAmountToUpdate += item.amount;
-      orderTotalPriceToUpdate += item.total;
+      const orderTotalToUpdate = updateTotalAmount(item, orderTotalRaw, '+');
 
-      let orderTotalToUpdate = {
-        totalPrice: orderTotalPriceToUpdate,
-        totalAmount: orderTotalAmountToUpdate,
-      };
+      const stateToReturn = returnState(
+        state,
+        orderArrayToUpdate,
+        orderTotalToUpdate
+      );
 
-      return {
-        ...state,
-        completeOrder: {
-          order: orderArrayToUpdate,
-          orderTotal: orderTotalToUpdate,
-        },
-      };
+      return stateToReturn;
+    }
     case actionTypes.INPUT_CUSTOMER_DATA:
       const target = action.customerData.target;
       const customerObject = { ...state.customer };
