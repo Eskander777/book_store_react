@@ -33,6 +33,27 @@ const changeCartItemsNumber = (titleToChangeAmount, presentOrder) => {
   return [item, itemToChangeIndex];
 };
 
+const updateTotalAmount = (item, order, symbol) => {
+  let updatedOrderTotalAmount;
+  let updatedOrderTotalPrice;
+  switch (symbol) {
+    case '+':
+      updatedOrderTotalAmount = order.totalAmount + item.amount;
+      updatedOrderTotalPrice = order.totalPrice + item.total;
+      break;
+    case '-':
+      updatedOrderTotalAmount = order.totalAmount - item.amount;
+      updatedOrderTotalPrice = order.totalPrice - item.total;
+      break;
+    default:
+      throw new Error('Something went wrong');
+  }
+  return {
+    totalPrice: updatedOrderTotalPrice,
+    totalAmount: updatedOrderTotalAmount,
+  };
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ADDED_TO_CART:
@@ -57,14 +78,11 @@ const reducer = (state = initialState, action) => {
         if (!orderArrayTitles.includes(pickedItem.title)) {
           orderArray.push(pickedItem);
 
-          const updatedOrderTotalAmount =
-            orderTotal.totalAmount + pickedItem.amount;
-          const updatedOrderTotalPrice =
-            orderTotal.totalPrice + pickedItem.total;
-          const updatedOrderTotal = {
-            totalPrice: updatedOrderTotalPrice,
-            totalAmount: updatedOrderTotalAmount,
-          };
+          const updatedOrderTotal = updateTotalAmount(
+            pickedItem,
+            orderTotal,
+            '+'
+          );
           alert('Товар успешно добавлен!');
 
           return {
@@ -87,14 +105,11 @@ const reducer = (state = initialState, action) => {
           itemToAddAmount.total = itemToAddTotalPrice;
           orderArray[itemToAddAmountIndex] = itemToAddAmount;
 
-          const updatedOrderTotalAmount =
-            orderTotal.totalAmount + pickedItem.amount;
-          const updatedOrderTotalPrice =
-            orderTotal.totalPrice + pickedItem.total;
-          const updatedOrderTotal = {
-            totalPrice: updatedOrderTotalPrice,
-            totalAmount: updatedOrderTotalAmount,
-          };
+          const updatedOrderTotal = updateTotalAmount(
+            pickedItem,
+            orderTotal,
+            '+'
+          );
 
           alert(
             `Еще ${pickedItem.amount} единиц ${pickedItem.title} добавлено в корзину.`
@@ -109,14 +124,14 @@ const reducer = (state = initialState, action) => {
           };
         }
       } else {
-        const orderArray = [];
-        orderArray.push(pickedItem);
+        let newOrderArray = [];
+        newOrderArray.push(pickedItem);
 
         alert('Товар успешно добавлен!');
         return {
           ...state,
           completeOrder: {
-            order: orderArray,
+            order: newOrderArray,
             orderTotal: {
               totalPrice: pickedItem.total,
               totalAmount: pickedItem.amount,
@@ -125,21 +140,19 @@ const reducer = (state = initialState, action) => {
         };
       }
     case actionTypes.REMOVED_FROM_CART:
-      let orderArray = [...state.completeOrder.order];
+      console.log(action);
+      const orderArray = [...state.completeOrder.order];
       let orderTotal = { ...state.completeOrder.orderTotal };
 
       const updatedOrderArray = orderArray.filter(
-        (book) => book.title !== action.titleToDelete
+        (book) => book.title !== action.itemToDelete.title
       );
 
-      let updatedOrderTotalAmount =
-        orderTotal.totalAmount - action.amountToDelete;
-      let updatedOrderTotalPrice = orderTotal.totalPrice - action.sumToDelete;
-
-      let updatedOrderTotal = {
-        totalPrice: updatedOrderTotalPrice,
-        totalAmount: updatedOrderTotalAmount,
-      };
+      const updatedOrderTotal = updateTotalAmount(
+        action.itemToDelete,
+        orderTotal,
+        '-'
+      );
 
       return {
         ...state,

@@ -14,10 +14,10 @@ class Cart extends Component {
     if (this.props.completeOrder.order) {
       const cartOrder = this.props.completeOrder.order;
 
-      cartItems = cartOrder.map(item => (
+      cartItems = cartOrder.map((item) => (
         <CartItem
           cartItem={item}
-          changeCartAmount={event =>
+          changeCartAmount={(event) =>
             this.props.onAmountChange(event.target.value, item.title)
           }
           deleteItem={this.props.onRemovedItem}
@@ -81,27 +81,25 @@ class Cart extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    completeOrder: state.completeOrder
+    completeOrder: state.completeOrder,
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    onRemovedItem: (title, amount, price) =>
+    onRemovedItem: (item) =>
       dispatch({
         type: actionTypes.REMOVED_FROM_CART,
-        titleToDelete: title,
-        amountToDelete: amount,
-        sumToDelete: price
+        itemToDelete: item,
       }),
     onAmountChange: (amount, title) =>
       dispatch({
         type: actionTypes.AMOUNT_CHANGED,
         changedAmount: amount,
-        changedAmountTitle: title
-      })
+        changedAmountTitle: title,
+      }),
   };
 };
 
