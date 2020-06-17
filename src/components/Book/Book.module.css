@@ -38,9 +38,14 @@
   padding: 15px 40px 30px;
 }
 
+.Book__description_title {
+  text-align: center;
+}
+
 .Book__description {
   margin: 2px;
   margin-right: 5px;
+  text-align: justify;
 }
 
 .Book__code {

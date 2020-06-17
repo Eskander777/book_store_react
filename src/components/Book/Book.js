@@ -36,7 +36,7 @@ const book = ({ book, imageClicked, amountChange, addToCartClick }) => {
       </div>
       <div className={classes.Book__description_container}>
         <div className={classes.Book__description}>
-          <h3 className="Book_Book__description_title">{book.title}</h3>
+          <h3 className={classes.Book__description_title}>{book.title}</h3>
           <p>{book.description} </p>
           <div className={classes.Book__code}>Артикул: {book.code} </div>
         </div>
